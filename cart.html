@@ -1,0 +1,53 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class CartController extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        // Load Cart library and helper
+        $this->load->library('cart');
+    }
+
+    public function index() {
+        // Sample data for table (e.g. product details)
+        $data['products'] = [
+            ['id' => 1, 'name' => 'Product 1', 'price' => 100],
+            ['id' => 2, 'name' => 'Product 2', 'price' => 200],
+            ['id' => 3, 'name' => 'Product 3', 'price' => 300],
+        ];
+        // Load the view
+        $this->load->view('product_view', $data);
+    }
+
+    public function add_to_cart($id) {
+        // Sample products data (In a real-world application, you'd fetch from the database)
+        $products = [
+            1 => ['id' => 1, 'name' => 'Product 1', 'price' => 100],
+            2 => ['id' => 2, 'name' => 'Product 2', 'price' => 200],
+            3 => ['id' => 3, 'name' => 'Product 3', 'price' => 300],
+        ];
+
+        // Get the product details by ID
+        $product = $products[$id];
+
+        // Add product to cart
+        $data = array(
+            'id'      => $product['id'],
+            'qty'     => 1, // You can modify this based on your needs
+            'price'   => $product['price'],
+            'name'    => $product['name']
+        );
+        
+        $this->cart->insert($data);
+
+        // Redirect to the same page (or cart page if you have one)
+        redirect('CartController/index');
+    }
+
+    public function view_cart() {
+        // Display the cart content
+        $this->load->view('cart_view');
+    }
+
+}
